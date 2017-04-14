@@ -1,12 +1,12 @@
 {
-    "name": "vue-event-bulletin",
+    "name": "crossfit-1-rep-max-tracker",
     "version": "1.0.0",
-    "description": "Demo application for the scotch.io tutorial",
+    "description": "CrossFit 1 Rep Max Tracker",
     "main": "server.js",
     "scripts": {
         "start": "node server.js"
     },
-    "author": "Ryan Chenkie, Jason Lam",
+    "author": "Kris J Hamilton",
     "license": "MIT",
     "dependencies": {
         "bootstrap": "^3.3.6",
