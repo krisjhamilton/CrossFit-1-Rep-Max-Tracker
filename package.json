@@ -1,24 +1,27 @@
 {
-  "name": "vue-event-bulletin",
-  "version": "1.0.0",
-  "description": "Demo application for the scotch.io tutorial",
-  "main": "server.js",
-  "author": "Ryan Chenkie, Jason Lam",
-  "license": "MIT",
-  "dependencies": {
-    "bootstrap": "^3.3.6",
-    "ejs": "^2.3.4",
-    "express": "^4.13.3",
-    "morgan": "^1.6.1",
-    "vue": "^1.0.16",
-    "vue-moment": "^2.0.2",
-    "vue-resource": "^0.1.17",
-    "vue-router": "^2.4.0"
-  },
-  "devDependencies": {
-    "body-parser": "^1.14.1",
-    "errorhandler": "^1.4.2",
-    "method-override": "^2.3.5",
-    "morgan": "^1.6.1"
-  }
+    "name": "vue-event-bulletin",
+    "version": "1.0.0",
+    "description": "Demo application for the scotch.io tutorial",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "author": "Ryan Chenkie, Jason Lam",
+    "license": "MIT",
+    "dependencies": {
+        "bootstrap": "^3.3.6",
+        "ejs": "^2.3.4",
+        "express": "^4.13.3",
+        "morgan": "^1.6.1",
+        "vue": "^1.0.16",
+        "vue-moment": "^2.0.2",
+        "vue-resource": "^0.1.17",
+        "vue-router": "^2.4.0"
+    },
+    "devDependencies": {
+        "body-parser": "^1.14.1",
+        "errorhandler": "^1.4.2",
+        "method-override": "^2.3.5",
+        "morgan": "^1.6.1"
+    }
 }
