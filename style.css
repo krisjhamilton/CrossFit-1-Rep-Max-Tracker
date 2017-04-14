@@ -1,0 +1,7 @@
+.strong {
+    font-weight: bold;
+}
+
+[v-cloak] {
+  display:none;
+}
