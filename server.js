@@ -34,5 +34,9 @@ app.get('/', routes.index);
 app.all('/api/events', api.events);
 app.all('/api/events/:eventId', api.event)
 
-app.listen(5000);
-console.log('Magic happens on port 8080...');
+// app.listen(5000);
+var port = process.env.PORT || 8000;
+app.listen(port, function() {
+    console.log("App is running on port " + port);
+});
+console.log('Magic is happenning...');
