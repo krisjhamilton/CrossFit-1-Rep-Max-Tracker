@@ -6,7 +6,8 @@ new Vue({
         events: [],
         // editingTask: false,
         editingEvent: {},
-        userEmail: ""
+        userEmail: "",
+        list: false
     },
     data() {
         return {
@@ -45,6 +46,7 @@ new Vue({
         this.lock.on('authorization_error', (error) => {
             // handle error when authorizaton fails
         });
+
     },
 
     methods: {
@@ -59,6 +61,16 @@ new Vue({
             localStorage.removeItem('id_token');
             localStorage.removeItem('profile');
             this.authenticated = false;
+        },
+
+        listView: function() {
+            var toggle = this.list;
+            this.$set('list', !toggle);
+            console.log("toggled");
+        },
+
+        refreshEvents: function() {
+            this.fetchEvents();
         },
 
         fetchEvents: function() {
@@ -137,7 +149,7 @@ new Vue({
                         console.log(err);
                     });
             }
-        }
+        },
     },
 
     filters: {
