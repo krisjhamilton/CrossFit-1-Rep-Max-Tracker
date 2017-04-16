@@ -20,9 +20,12 @@
         }
     </style>
 
+
+
 </head>
 
 <body id="events">
+
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <a class="navbar-brand"><i class="glyphicon glyphicon-screenshot"></i>  CrossFit 1 Rep Max Tracker</a>
@@ -88,13 +91,13 @@
                         <i class="glyphicon glyphicon-ok" v-if="event == editingEvent" v-on:click="endEditing(event)"></i>
                     </div>
                     <div class="text-right">
-                        <button class="btn btn-xs btn-danger" v-on:click="deleteEvent(event.id)">Remove</button>
+                        <button class="btn btn-xs btn-warning" v-on:click="deleteEvent(event.id)">Remove</button>
                     </div>
                 </div>
 
             </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-12">
             <table class="table table-hover" v-show="list">
                 <thead>
                     <tr class="">
@@ -102,32 +105,122 @@
                         <td class="strong">Weight</td>
                         <td class="strong">Date</td>
                         <td class="strong">Modify</td>
+                        <td class="strong">%</td>
                         <td class="strong">Remove</td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="event in events | orderBy 'date' -1">
-                        <td class="col-sm-5" v-if="event !== editingEvent">{{ event.movement }}</td>
-                        <td class="col-sm-5" v-if="event === editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.movement"></td>
+                        <td class="col-sm-4" v-if="event !== editingEvent">{{ event.movement }}</td>
+                        <td class="col-sm-4" v-if="event === editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.movement"></td>
                         <td class="col-sm-2" v-if="event !== editingEvent">{{ event.weight }} {{ event.measurement }}</td>
                         <td class="col-sm-2" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight"></td>
-                        <td class="col-sm-4" v-if="event !== editingEvent"><i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}</td>
-                        <td class="col-sm-4" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.date"></td>
+                        <td class="col-sm-3" v-if="event !== editingEvent"><i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}</td>
+                        <td class="col-sm-3" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.date"></td>
                         <td class="col-sm-1" v-if="event !== editingEvent"><i class="glyphicon glyphicon-pencil" v-on:click="editEvent(event)"></i></td>
                         <td class="col-sm-1" v-if="event == editingEvent"><i class="glyphicon glyphicon-ok" v-on:click="endEditing(event)"></i></td>
                         <td class="col-sm-1">
-                            <button class="btn btn-xs btn-danger" v-on:click="deleteEvent(event.id)">Remove</button>
-                            <!--<button class="btn btn-xs btn-danger" v-on:click="selectedEvent == event.id">%</button>-->
+                            <!--<button class="btn btn-xs btn-success" v-on:click="selectEvent(event.weight)">%</button>-->
+                            <button type="button" v-on:click="selectEvent(event.weight)" class="btn btn-xs btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">%</button>
+                        </td>
+                        <td class="col-sm-2">
+                            <button class="btn btn-xs btn-warning" v-on:click="deleteEvent(event.id)">Remove</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div>
 
+
+        <!-- Small modal -->
+        <!--<button type="button" v-on:click="selectEvent(event.weight)" class="btn btn-xs btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">%</button>-->
+
+
+        <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">1 Rep Max Percentages</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-hover" v-show="list">
+                            <thead>
+                                <tr class="">
+                                    <td class="strong">% of 1 RM</td>
+                                    <td class="strong">Scaled Weight</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="col-sm-5">90%</td>
+                                    <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.9 | rounding 0 }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-5">80%</td>
+                                    <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.8 | rounding 0 }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-5">70%</td>
+                                    <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.7 | rounding 0 }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-5">60%</td>
+                                    <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.6 | rounding 0 }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-5">50%</td>
+                                    <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.5 | rounding 0 }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="col-sm-3">
+            <table class="table table-hover" v-show="list">
+                <thead>
+                    <tr class="">
+                        <td class="strong">% of 1 RM</td>
+                        <td class="strong">Weight</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-sm-5">90%</td>
+                        <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.9 | rounding 0 }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-5">80%</td>
+                        <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.8 | rounding 0 }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-5">70%</td>
+                        <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.7 | rounding 0 }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-5">60%</td>
+                        <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.6 | rounding 0 }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-5">50%</td>
+                        <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.5 | rounding 0 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        
+         </div>-->
+    </div>
 </body>
 <script src="node_modules/vue/dist/vue.min.js "></script>
 <script src="node_modules/vue-resource/dist/vue-resource.min.js "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="backend/vue-router.js "></script>
 <script src="app.js "></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js "></script>

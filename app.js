@@ -1,3 +1,10 @@
+Vue.component('modal', {
+    template: '#bs-modal',
+    data: function() {
+        console.log("### DATA");
+    },
+});
+
 new Vue({
     el: '#events',
 
@@ -7,7 +14,8 @@ new Vue({
         // editingTask: false,
         editingEvent: {},
         userEmail: "",
-        list: false
+        list: true,
+        selectedEvent: 0
     },
     data() {
         return {
@@ -150,11 +158,27 @@ new Vue({
                     });
             }
         },
+
+        selectEvent: function(event) {
+            this.$set('selectedEvent', event);
+            console.log('clicked');
+            console.log(this.selectedEvent);
+        }
     },
 
     filters: {
         moment: function(date) {
             return moment(date).format('DD MMMM YYYY');
+        },
+        rounding: function(number, decimal_places) {
+            if (typeof number === 'number' && typeof decimal_places === 'number') {
+                var denominator = Math.pow(10, decimal_places),
+                    rounded_number = Math.round(number * denominator) / denominator;
+
+                return rounded_number;
+            } else {
+                return number;
+            }
         }
     }
 });
