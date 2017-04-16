@@ -19,6 +19,7 @@
             margin-top: 8px;
         }
     </style>
+
 </head>
 
 <body id="events">
@@ -32,6 +33,7 @@
 
         </div>
     </nav>
+
     <div class="container" id="events" v-show="authenticated" v-cloak>
         <div class="page-header">
             <h1>CrossFit 1RM Tracker </h1>
@@ -92,36 +94,42 @@
 
             </div>
         </div>
-        <table class="table table-hover" v-show="list">
-            <thead>
-                <tr class="">
-                    <td class="strong">Movement</td>
-                    <td class="strong">Weight</td>
-                    <td class="strong">Date</td>
-                    <td class="strong">Modify</td>
-                    <td class="strong">Remove</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="event in events | orderBy 'date' -1">
-                    <td class="col-sm-5" v-if="event !== editingEvent">{{ event.movement }}</td>
-                    <td class="col-sm-5" v-if="event === editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.movement"></td>
-                    <td class="col-sm-2" v-if="event !== editingEvent">{{ event.weight }} {{ event.measurement }}</td>
-                    <td class="col-sm-2" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight"></td>
-                    <td class="col-sm-4" v-if="event !== editingEvent"><i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}</td>
-                    <td class="col-sm-4" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.date"></td>
-                    <td class="col-sm-1" v-if="event !== editingEvent"><i class="glyphicon glyphicon-pencil" v-on:click="editEvent(event)"></i></td>
-                    <td class="col-sm-1" v-if="event == editingEvent"><i class="glyphicon glyphicon-ok" v-on:click="endEditing(event)"></i></td>
-                    <td class="col-sm-1"><button class="btn btn-xs btn-danger" v-on:click="deleteEvent(event.id)">Remove</button></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="col-sm-8">
+            <table class="table table-hover" v-show="list">
+                <thead>
+                    <tr class="">
+                        <td class="strong">Movement</td>
+                        <td class="strong">Weight</td>
+                        <td class="strong">Date</td>
+                        <td class="strong">Modify</td>
+                        <td class="strong">Remove</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="event in events | orderBy 'date' -1">
+                        <td class="col-sm-5" v-if="event !== editingEvent">{{ event.movement }}</td>
+                        <td class="col-sm-5" v-if="event === editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.movement"></td>
+                        <td class="col-sm-2" v-if="event !== editingEvent">{{ event.weight }} {{ event.measurement }}</td>
+                        <td class="col-sm-2" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight"></td>
+                        <td class="col-sm-4" v-if="event !== editingEvent"><i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}</td>
+                        <td class="col-sm-4" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.date"></td>
+                        <td class="col-sm-1" v-if="event !== editingEvent"><i class="glyphicon glyphicon-pencil" v-on:click="editEvent(event)"></i></td>
+                        <td class="col-sm-1" v-if="event == editingEvent"><i class="glyphicon glyphicon-ok" v-on:click="endEditing(event)"></i></td>
+                        <td class="col-sm-1">
+                            <button class="btn btn-xs btn-danger" v-on:click="deleteEvent(event.id)">Remove</button>
+                            <!--<button class="btn btn-xs btn-danger" v-on:click="selectedEvent == event.id">%</button>-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
 </body>
-<script src="node_modules/vue/dist/vue.min.js"></script>
-<script src="node_modules/vue-resource/dist/vue-resource.min.js"></script>
-<script src="backend/vue-router.js"></script>
-<script src="app.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="node_modules/vue/dist/vue.min.js "></script>
+<script src="node_modules/vue-resource/dist/vue-resource.min.js "></script>
+<script src="backend/vue-router.js "></script>
+<script src="app.js "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js "></script>
 
 </html>
