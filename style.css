@@ -6,6 +6,19 @@
     display: none;
 }
 
+.btn {
+    margin-left: 10px;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+
+/*.btn-danger {
+    margin-top: 8px;
+}*/
+
 .modal-mask {
     position: fixed;
     z-index: 9998;

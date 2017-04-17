@@ -1,17 +1,9 @@
-Vue.component('modal', {
-    template: '#bs-modal',
-    data: function() {
-        console.log("### DATA");
-    },
-});
-
 new Vue({
     el: '#events',
 
     data: {
         event: { movement: '', weight: '', measurement: '', date: '', user: '' },
         events: [],
-        // editingTask: false,
         editingEvent: {},
         userEmail: "",
         list: true,
@@ -21,13 +13,20 @@ new Vue({
         return {
             authenticated: false,
             secretThing: '',
-            lock: new Auth0Lock('uFD3IKN_en94nyvp4mswykUxN9qFgkIh', 'krisjhamilton.au.auth0.com')
+            lock: new Auth0Lock('uFD3IKN_en94nyvp4mswykUxN9qFgkIh', 'krisjhamilton.au.auth0.com'),
+            notes: [{
+                "title": "0.02",
+                "description": "Added 1RM percentages for each movements on List View. Select the 'Change View' button, then the % button on the coresponding table row to reveal a dialog box displaying percentages."
+            }, {
+                "title": "0.01",
+                "description": "Initial Release"
+            }]
         }
     },
 
     ready: function() {
         // this.fetchEvents();
-
+        console.log(this.notes);
         var self = this;
 
         this.authenticated = checkAuth();

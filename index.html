@@ -11,13 +11,7 @@
     <!-- Setting the right viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <style>
-        .form-control {
-            margin-bottom: 10px;
-        }
-        
-        .btn-danger {
-            margin-top: 8px;
-        }
+
     </style>
 
 
@@ -26,21 +20,27 @@
 
 <body id="events">
 
+    <!--Navbar for the single page site-->
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <a class="navbar-brand"><i class="glyphicon glyphicon-screenshot"></i>  CrossFit 1 Rep Max Tracker</a>
-            <button type="button" class="btn btn-default navbar-btn pull-right" @click="login()" v-show="!authenticated" v-cloak>Login</button>
             <button type="button" class="btn btn-primary navbar-btn pull-left" @click="listView" v-show="authenticated" v-cloak>Change View</button>
+            <button type="button" class="btn btn-info navbar-btn pull-right" data-toggle="modal" data-target="#releasenotes">Release Notes</button>
+            <button type="button" class="btn btn-danger navbar-btn pull-right" @click="login()" v-show="!authenticated" v-cloak>Login</button>
+            <button type="button" class="btn btn-danger navbar-btn pull-right" @click="logout()" v-show="authenticated" v-cloak>Logout</button>
             <!--<button type="button" class="btn btn-primary navbar-btn pull-left" @click="refreshEvents" v-show="authenticated" v-cloak>Refresh</button>-->
-            <button type="button" class="btn btn-default navbar-btn pull-right" @click="logout()" v-show="authenticated" v-cloak>Logout</button>
-
         </div>
     </nav>
 
+    <!--Container for the bulk of the displayed single page site-->
     <div class="container" id="events" v-show="authenticated" v-cloak>
+
+        <!--Page Header-->
         <div class="page-header">
             <h1>CrossFit 1RM Tracker </h1>
         </div>
+
+        <!--Form to add 1 Rep Max-->
         <div class="col-sm-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -68,6 +68,8 @@
                 </div>
             </div>
         </div>
+
+        <!--Panels diplaying 1 Rep Max for each movement in order of Recent Date completed-->
         <div class="col-sm-3" v-show="!list" v-for="event in events | orderBy 'date' -1 ">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -97,6 +99,8 @@
 
             </div>
         </div>
+
+        <!--List View diplaying 1 Rep Max for each movement in order of Recent Date completed-->
         <div class="col-sm-12">
             <table class="table table-hover" v-show="list">
                 <thead>
@@ -131,11 +135,7 @@
             </table>
         </div>
 
-
-        <!-- Small modal -->
-        <!--<button type="button" v-on:click="selectEvent(event.weight)" class="btn btn-xs btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">%</button>-->
-
-
+        <!--Percentages Modal-->
         <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
@@ -182,41 +182,32 @@
             </div>
         </div>
 
-        <!--<div class="col-sm-3">
-            <table class="table table-hover" v-show="list">
-                <thead>
-                    <tr class="">
-                        <td class="strong">% of 1 RM</td>
-                        <td class="strong">Weight</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="col-sm-5">90%</td>
-                        <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.9 | rounding 0 }}</td>
-                    </tr>
-                    <tr>
-                        <td class="col-sm-5">80%</td>
-                        <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.8 | rounding 0 }}</td>
-                    </tr>
-                    <tr>
-                        <td class="col-sm-5">70%</td>
-                        <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.7 | rounding 0 }}</td>
-                    </tr>
-                    <tr>
-                        <td class="col-sm-5">60%</td>
-                        <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.6 | rounding 0 }}</td>
-                    </tr>
-                    <tr>
-                        <td class="col-sm-5">50%</td>
-                        <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.5 | rounding 0 }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        
-         </div>-->
     </div>
+
+    <!--Release Notes Modal-->
+    <div id="releasenotes" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="releasenotes" role="document">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Beta Release Notes</h4>
+                </div>
+                <div class="modal-body">
+                    <div v-for="note in notes">
+                        <p>
+                            <b>{{note.title}}</b><br /> {{note.description}}
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
+
 <script src="node_modules/vue/dist/vue.min.js "></script>
 <script src="node_modules/vue-resource/dist/vue-resource.min.js "></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
