@@ -9,6 +9,7 @@ new Vue({
         list: true,
         selectedEvent: 0
     },
+
     data() {
         return {
             authenticated: false,
@@ -21,18 +22,13 @@ new Vue({
                 "title": "0.01",
                 "description": "Initial Release"
             }]
-        }
+        };
     },
 
     ready: function() {
-        // this.fetchEvents();
-        console.log(this.notes);
-        var self = this;
-
         this.authenticated = checkAuth();
-
         this.lock.on('authenticated', (authResult) => {
-            console.log('authenticated');
+            // console.log('authenticated');
             localStorage.setItem('id_token', authResult.idToken);
             this.lock.getProfile(authResult.idToken, (error, profile) => {
                 if (error) {
@@ -46,6 +42,7 @@ new Vue({
                 userEmail = email.email;
                 //console.log(user);
                 this.authenticated = true;
+                console.log("Authentication " + this.authenticated);
                 this.fetchEvents();
             });
         });
@@ -68,6 +65,7 @@ new Vue({
             localStorage.removeItem('id_token');
             localStorage.removeItem('profile');
             this.authenticated = false;
+            console.log("Authentication " + this.authenticated);
         },
 
         listView: function() {
@@ -81,43 +79,45 @@ new Vue({
         },
 
         fetchEvents: function() {
-            console.log(userEmail);
             var events = [];
             this.$http.headers.common['AnonymousToken'] = '6ffef82b-33ae-4436-b0b8-9369d7eba326';
-            this.$http.get('https://api.backand.com/1/objects/movements')
+            this.$http.get('https://api.backand.com/1/objects/movements?pageSize=50')
                 .success(function(eventsList) {
+                    console.log(eventsList);
                     for (i = 0; i < eventsList.data.length; i++) {
                         if (eventsList.data[i].user == userEmail) {
                             events.push(eventsList.data[i]);
                         }
                     }
                     this.$set('events', events);
-                    console.log(events);
+                    console.log(this.events);
                 })
                 .error(function(err) {
                     console.log(err);
                 });
+            console.log(this.events);
         },
 
         addEvent: function() {
             if (this.event.movement.trim()) {
                 console.log(this.event);
-                this.event.id;
+                // this.event.id;
+                console.log("id = " + this.event.id);
                 this.event.user = userEmail;
+                console.log("user = " + this.event.user);
                 this.events.push(this.event);
-                console.log('Event added!');
-                console.log(this.event);
+                console.log('Event added!' + this.event);
+                console.log("Events are " + this.events);
                 this.$http.headers.common['AnonymousToken'] = '6ffef82b-33ae-4436-b0b8-9369d7eba326';
                 this.$http.post('https://api.backand.com/1/objects/movements/', this.event)
                     .success(function(res) {
-                        console.log(res);
                         this.fetchEvents();
                     })
                     .error(function(err) {
                         console.log(err);
                     });
             }
-            console.log(this.event);
+            console.log(this.events);
         },
 
         editEvent: function(event) {
