@@ -16,6 +16,9 @@ new Vue({
             secretThing: '',
             lock: new Auth0Lock('uFD3IKN_en94nyvp4mswykUxN9qFgkIh', 'krisjhamilton.au.auth0.com'),
             notes: [{
+                "title": "0.03",
+                "description": "Squashed a stupid bug. Security Update: A RESTful action now takes care of the filtering of what gets downloaded."
+            }, {
                 "title": "0.02",
                 "description": "Added 1RM percentages for each movements on List View. Select the 'Change View' button, then the % button on the coresponding table row to reveal a dialog box displaying percentages."
             }, {
@@ -80,8 +83,9 @@ new Vue({
 
         fetchEvents: function() {
             var events = [];
+            // console.log('https://api.backand.com/1/objects/action/movements/?name=test&parameters={"user":"' + userEmail + '"}');
             this.$http.headers.common['AnonymousToken'] = '6ffef82b-33ae-4436-b0b8-9369d7eba326';
-            this.$http.get('https://api.backand.com/1/objects/movements?pageSize=50')
+            this.$http.get('https://api.backand.com/1/objects/action/movements/?name=test&parameters={"user":"' + userEmail + '"}')
                 .success(function(eventsList) {
                     console.log(eventsList);
                     for (i = 0; i < eventsList.data.length; i++) {
