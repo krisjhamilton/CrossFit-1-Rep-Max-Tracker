@@ -16,6 +16,9 @@ new Vue({
             secretThing: '',
             lock: new Auth0Lock('uFD3IKN_en94nyvp4mswykUxN9qFgkIh', 'krisjhamilton.au.auth0.com'),
             notes: [{
+                "title": "0.04",
+                "description": "Update issues with browser refreshing and loss of data"
+            }, {
                 "title": "0.03",
                 "description": "Squashed a stupid bug. Security Update: A RESTful action now takes care of the filtering of what gets downloaded."
             }, {
@@ -43,12 +46,22 @@ new Vue({
                 var email = JSON.parse(localStorage.getItem(['profile']));
                 //console.log(email.email);
                 userEmail = email.email;
+                localStorage.setItem('email', JSON.stringify(userEmail));
                 //console.log(user);
                 this.authenticated = true;
                 console.log("Authentication " + this.authenticated);
                 this.fetchEvents();
             });
         });
+
+        if (JSON.parse(localStorage.getItem(['email'])) && this.authenticated) {
+            // userEmail = JSON.parse(localStorage.getItem(['email']));
+            // console.log(userEmail);
+            // console.log(this.authenticated);
+            // this.fetchEvents();
+            this.refreshEvents();
+
+        };
 
         this.lock.on('authorization_error', (error) => {
             // handle error when authorizaton fails
@@ -78,7 +91,13 @@ new Vue({
         },
 
         refreshEvents: function() {
-            this.fetchEvents();
+            if (JSON.parse(localStorage.getItem(['email'])) && this.authenticated) {
+                userEmail = JSON.parse(localStorage.getItem(['email']));
+                console.log(userEmail);
+                console.log(this.authenticated);
+                this.fetchEvents();
+            };
+
         },
 
         fetchEvents: function() {
