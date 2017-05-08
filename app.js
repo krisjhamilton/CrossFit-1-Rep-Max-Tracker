@@ -60,11 +60,10 @@ new Vue({
             // console.log(this.authenticated);
             // this.fetchEvents();
             this.refreshEvents();
-
         };
 
         this.lock.on('authorization_error', (error) => {
-            // handle error when authorizaton fails
+
         });
 
     },
