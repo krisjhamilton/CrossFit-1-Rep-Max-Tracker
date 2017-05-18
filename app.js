@@ -43,11 +43,12 @@ new Vue({
                 }
                 // Set the token and user profile in local storage
                 localStorage.setItem('profile', JSON.stringify(profile));
+                console.log(JSON.parse(localStorage.getItem('profile')));
                 var email = JSON.parse(localStorage.getItem(['profile']));
                 //console.log(email.email);
                 userEmail = email.email;
                 localStorage.setItem('email', JSON.stringify(userEmail));
-                //console.log(user);
+                console.log(localStorage.getItem('email'));
                 this.authenticated = true;
                 console.log("Authentication " + this.authenticated);
                 this.fetchEvents();
@@ -163,8 +164,8 @@ new Vue({
             // this.editingTask = false;
         },
 
-        deleteEvent: function(index) {
-            if (confirm('Are you sure?' + index)) {
+        deleteEvent: function(index, movement) {
+            if (confirm('Are you sure you want to remove the ' + movement + '?')) {
                 // this.events.splice(index, 1);
                 this.$http.headers.common['AnonymousToken'] = '6ffef82b-33ae-4436-b0b8-9369d7eba326';
                 this.$http.delete('https://api.backand.com/1/objects/movements/' + index)

@@ -23,7 +23,7 @@
     <!--Navbar for the single page site-->
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <a class="navbar-brand"><i class="glyphicon glyphicon-screenshot"></i>  CrossFit 1 Rep Max Tracker</a>
+            <a class="navbar-brand">1RM  <i class="glyphicon glyphicon-screenshot"></i></a>
 
             <button type="button" class="btn btn-info navbar-btn pull-right" data-toggle="modal" data-target="#releasenotes">Release Notes</button>
             <button type="button" class="btn btn-danger navbar-btn pull-right" @click="login()" v-show="!authenticated" v-cloak>Login</button>
@@ -37,9 +37,10 @@
 
         <!--Page Header-->
         <div class="col-sm-12">
-            <h1>CrossFit 1RM Tracker <button type="button" class="btn btn-primary pull-right" @click="listView" v-show="authenticated" v-cloak>Change View</button> <button type="button" class="btn btn-primary pull-right" @click="refreshEvents" v-show="authenticated"
-                    v-cloak>Refresh</button></h1>
+            <button type="button" class="btn btn-primary" @click="listView" v-show="authenticated" v-cloak>Change View</button> <button type="button" class="btn btn-primary" @click="refreshEvents" v-show="authenticated" v-cloak><i class="glyphicon glyphicon-refresh"></i></button>
             <br />
+            <br />
+
         </div>
 
         <!--Form to add 1 Rep Max-->
@@ -53,11 +54,33 @@
                         <h4>Enter your 1 Rep Max</h4>
                     </div>
                     <div>
-                        <div class="col-sm-3">
+                        <!--<div class="col-sm-3">
                             <input class="form-control" placeholder="Movement" v-model="event.movement">
+                        </div>-->
+                        <div class="col-sm-3">
+                            <select class="form-control" placeholder="Movement" v-model="event.movement">
+                              <option value="Back squat" selected>Back squat</option>
+                              <option value="Box jump">Box jump</option>
+                              <option value="Clean and jerk">Clean and jerk</option>
+                              <option value="Deadlift">Deadlift</option>
+                              <option value="Front squat">Front squat</option>
+                              <option value="Overhead squat">Overhead squat</option>
+                              <option value="Power clean">Power clean</option>
+                              <option value="Power snatch">Power snatch</option>
+                              <option value="Push jerk">Push jerk</option>
+                              <option value="Push press">Push press</option>
+                              <option value="Shoulder press">Shoulder press</option>
+                              <option value="Squat clean">Squat clean</option>
+                              <option value="Squat snatch">Squat snatch</option>
+                              <option value="Split jerk" >Split jerk</option>
+                              <option value="Strict press">Strict press</option>
+                              <option value="Sumo deadlift" >Sumo deadlift</option>
+                              <option value="Thruster">Thruster</option>
+                              <option value="Turkish get up" >Turkish get up</option>
+                            </select>
                         </div>
                         <div class="col-sm-2">
-                            <input class="form-control" placeholder="Weight" v-model="event.weight">
+                            <input class="form-control" placeholder="Weight / Height" v-model="event.weight">
                         </div>
                         <div class="col-sm-2">
                             <select class="form-control" v-model="event.measurement">
@@ -75,7 +98,7 @@
         </div>
 
         <!--Panels diplaying 1 Rep Max for each movement in order of Recent Date completed-->
-        <div class="col-md-3 col-sm-6 col-xs-6" v-show="!list" v-for="event in events | orderBy 'date' -1 ">
+        <div class="col-md-3 col-sm-6 col-xs-12" v-show="!list" v-for="event in events | orderBy 'date' -1 ">
             <div class="panel panel-default ">
                 <!--<div class="panel-heading">
 
@@ -108,7 +131,7 @@
                         <i class="glyphicon glyphicon-pencil" ></i> Edit</button>
                     <button class="btn btn-xs btn-default no-pad-bottom" v-if="event == editingEvent" v-on:click="endEditing(event)">
                         <i class="glyphicon glyphicon-ok" ></i> Save</button>
-                    <button class="btn btn-xs btn-default" v-if="event !== editingEvent" v-on:click="deleteEvent(event.id)">Remove</button>
+                    <button class="btn btn-xs btn-default" v-if="event !== editingEvent" v-on:click="deleteEvent(event.id, event.movement)">Remove</button>
                 </div>
 
             </div>
