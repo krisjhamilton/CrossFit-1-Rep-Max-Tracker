@@ -8,6 +8,7 @@ new Vue({
         userEmail: "",
         list: true,
         selectedEvent: 0
+
     },
 
     data() {
@@ -27,7 +28,28 @@ new Vue({
             }, {
                 "title": "0.01",
                 "description": "Initial Release"
-            }]
+            }],
+            movements: [
+                { movement: 'Back squat' },
+                { movement: 'Box jump' },
+                { movement: 'Clean and jerk' },
+                { movement: 'Deadlift' },
+                { movement: 'Front squat' },
+                { movement: 'Overhead squat' },
+                { movement: 'Power clean' },
+                { movement: 'Power snatch' },
+                { movement: 'Push jerk' },
+                { movement: 'Push press' },
+                { movement: 'Shoulder press' },
+                { movement: 'Squat clean' },
+                { movement: 'Squat snatch' },
+                { movement: 'Split jerk' },
+                { movement: 'Strict press' },
+                { movement: 'Sumo deadlift' },
+                { movement: 'Thruster' },
+                { movement: 'Turkish get up' }
+            ],
+            selMovement: ''
         };
     },
 
@@ -118,7 +140,7 @@ new Vue({
                 .error(function(err) {
                     console.log(err);
                 });
-            console.log(this.events);
+            // console.log(this.events);
         },
 
         addEvent: function() {
@@ -151,6 +173,7 @@ new Vue({
         endEditing: function(task) {
             console.log(task.id);
             var taskString = task.id.toString();
+            selMovement = task.movement;
             this.$http.headers.common['AnonymousToken'] = '6ffef82b-33ae-4436-b0b8-9369d7eba326';
             this.$http.put('https://api.backand.com/1/objects/movements/' + taskString, task)
                 .success(function(res) {

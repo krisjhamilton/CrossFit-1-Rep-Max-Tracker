@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>CrossFit 1 Rep Max Tracker</title>
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- Auth0 Lock script -->
     <script src="https://cdn.auth0.com/js/lock/10.14/lock.min.js"></script>
     <!-- Setting the right viewport -->
@@ -21,156 +23,149 @@
 <body id="events">
 
     <!--Navbar for the single page site-->
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <a class="navbar-brand">1RM  <i class="glyphicon glyphicon-screenshot"></i></a>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
 
-            <button type="button" class="btn btn-info navbar-btn pull-right" data-toggle="modal" data-target="#releasenotes">Release Notes</button>
-            <button type="button" class="btn btn-danger navbar-btn pull-right" @click="login()" v-show="!authenticated" v-cloak>Login</button>
-            <button type="button" class="btn btn-danger navbar-btn pull-right" @click="logout()" v-show="authenticated" v-cloak>Logout</button>
+        <a class="navbar-brand">1RM  <i class="glyphicon glyphicon-screenshot"></i></a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <button type="button" class="btn btn-sm btn-outline-primary pull-right" data-toggle="modal" data-target="#releasenotes">Release Notes</button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-sm btn-outline-danger pull-right" @click="login()" v-show="!authenticated" v-cloak>Login</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger pull-right" @click="logout()" v-show="authenticated" v-cloak>Logout</button>
+                </li>
+            </ul>
 
         </div>
+
     </nav>
+    <br />
 
     <!--Container for the bulk of the displayed single page site-->
-    <div class="container" id="events" v-show="authenticated" v-cloak>
+    <div class="container-fluid" id="events" v-show="authenticated" v-cloak>
+        <div class="row">
+            <!--Page Header-->
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-sm btn-outline-primary" @click="listView" v-show="authenticated" v-cloak>Change View</button> <button type="button" class="btn btn-sm btn-outline-primary" @click="refreshEvents" v-show="authenticated"
+                    v-cloak><i class="fa fa-refresh"></i></button>
+                <br />
+                <br />
 
-        <!--Page Header-->
-        <div class="col-sm-12">
-            <button type="button" class="btn btn-primary" @click="listView" v-show="authenticated" v-cloak>Change View</button> <button type="button" class="btn btn-primary" @click="refreshEvents" v-show="authenticated" v-cloak><i class="glyphicon glyphicon-refresh"></i></button>
-            <br />
-            <br />
-
+            </div>
         </div>
 
-        <!--Form to add 1 Rep Max-->
-        <div class="col-sm-12">
-            <div class="well">
-                <!--<div class="panel-heading">
+
+        <div class="row">
+            <!--Form to add 1 Rep Max-->
+
+            <div class="col-sm-12">
+                <div class="card gutter">
+                    <!--<div class="well">-->
+                    <!--<div class="panel-heading">
                     <h4>Enter your 1 Rep Max</h4>
                 </div>-->
-                <div class="panel-body">
-                    <div class="col-sm-12">
+
+                    <div class="card-block">
+                        <!--<div class="col-sm-12">-->
                         <h4>Enter your 1 Rep Max</h4>
-                    </div>
-                    <div>
-                        <!--<div class="col-sm-3">
-                            <input class="form-control" placeholder="Movement" v-model="event.movement">
-                        </div>-->
-                        <div class="col-sm-3">
-                            <select class="form-control" placeholder="Movement" v-model="event.movement">
-                              <option value="Back squat" selected>Back squat</option>
-                              <option value="Box jump">Box jump</option>
-                              <option value="Clean and jerk">Clean and jerk</option>
-                              <option value="Deadlift">Deadlift</option>
-                              <option value="Front squat">Front squat</option>
-                              <option value="Overhead squat">Overhead squat</option>
-                              <option value="Power clean">Power clean</option>
-                              <option value="Power snatch">Power snatch</option>
-                              <option value="Push jerk">Push jerk</option>
-                              <option value="Push press">Push press</option>
-                              <option value="Shoulder press">Shoulder press</option>
-                              <option value="Squat clean">Squat clean</option>
-                              <option value="Squat snatch">Squat snatch</option>
-                              <option value="Split jerk" >Split jerk</option>
-                              <option value="Strict press">Strict press</option>
-                              <option value="Sumo deadlift" >Sumo deadlift</option>
-                              <option value="Thruster">Thruster</option>
-                              <option value="Turkish get up" >Turkish get up</option>
+                        <!--</div>-->
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <select class="form-control" placeholder="Movement" v-model="event.movement">
+                                <option v-for="movement in movements" >{{movement.movement}}</option>
                             </select>
-                        </div>
-                        <div class="col-sm-2">
-                            <input class="form-control" placeholder="Weight / Height" v-model="event.weight">
-                        </div>
-                        <div class="col-sm-2">
-                            <select class="form-control" v-model="event.measurement">
+                            </div>
+                            <div class="col-sm-2">
+                                <input class="form-control" placeholder="Weight / Height" v-model="event.weight">
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control" v-model="event.measurement">
                               <option value="kg" selected>kg</option>
                               <option value="cm">cm</option>
                             </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="date" class="form-control" placeholder="Date" v-model="event.date">
+                            </div>
+                            <div class="col-sm-1"><button class="btn btn-sm btn-outline-primary" v-on:click="addEvent">Add</button></div>
                         </div>
-                        <div class="col-sm-3">
-                            <input type="date" class="form-control" placeholder="Date" v-model="event.date">
-                        </div>
-                        <div class="col-sm-1"><button class="btn btn-primary" v-on:click="addEvent">Add</button></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!--Panels diplaying 1 Rep Max for each movement in order of Recent Date completed-->
-        <div class="col-md-3 col-sm-6 col-xs-12" v-show="!list" v-for="event in events | orderBy 'date' -1 ">
-            <div class="panel panel-default ">
-                <!--<div class="panel-heading">
-
-                </div>-->
-                <div class="panel-body panel-height">
-
-                    <div class="col-md-12">
-                        <p for="checkbox" v-if="event !== editingEvent" class="text-md" class="text-center">
-                            {{ event.movement }}
-                        </p>
-                        <input class="form-control" type="text" v-if="event === editingEvent" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.movement">
+        <div class="row">
+            <!--Panels diplaying 1 Rep Max for each movement in order of Recent Date completed-->
+            <div class="col-md-3 col-sm-6 col-xs-12" v-show="!list" v-for="event in events | orderBy 'date' -1 ">
+                <div class="card gutter">
+                    <div class="card-block panel-height">
+                        <div class="col-md-12">
+                            <p for="checkbox" v-if="event !== editingEvent" class="text-md" class="text-center">
+                                {{ event.movement }}
+                            </p>
+                            <select class="form-control" v-if="event === editingEvent" v-model="event.movement">
+                                <option v-for="movement in movements">{{movement.movement}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <p for="checkbox" v-if="event !== editingEvent" class="text-lg" v-if="event.weight">{{ event.weight }} {{ event.measurement }}</p>
+                            <input class="form-control" type="text" v-if="event === editingEvent" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight">
+                        </div>
+                        <div class="col-md-12">
+                            <p class="text-sm " for="checkbox" v-if="event !== editingEvent">
+                                <i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}
+                            </p>
+                            <input for="checkbox" v-if="event == editingEvent" type="date" class="form-control" placeholder="Date" v-model="event.date">
+                        </div>
                     </div>
-
-                    <div class="col-md-12">
-                        <p for="checkbox" v-if="event !== editingEvent" class="text-lg" v-if="event.weight">{{ event.weight }} {{ event.measurement }}</p>
-                        <input class="form-control" type="text" v-if="event === editingEvent" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight">
-                    </div>
-
-                    <div class="col-md-12">
-                        <p class="text-sm " for="checkbox" v-if="event !== editingEvent">
-                            <i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}
-                        </p>
-                        <input for="checkbox" v-if="event == editingEvent" type="date" class="form-control" placeholder="Date" v-model="event.date">
-                    </div>
-
-                </div>
-
-                <div class="panel-footer">
-                    <button class="btn btn-xs btn-default" v-if="event !== editingEvent" v-on:click="editEvent(event)">
+                    <div class="card-footer">
+                        <button class="btn btn-sm btn-outline-primary" v-if="event !== editingEvent" v-on:click="editEvent(event)">
                         <i class="glyphicon glyphicon-pencil" ></i> Edit</button>
-                    <button class="btn btn-xs btn-default no-pad-bottom" v-if="event == editingEvent" v-on:click="endEditing(event)">
+                        <button class="btn btn-sm btn-outline-primary" v-if="event == editingEvent" v-on:click="endEditing(event)">
                         <i class="glyphicon glyphicon-ok" ></i> Save</button>
-                    <button class="btn btn-xs btn-default" v-if="event !== editingEvent" v-on:click="deleteEvent(event.id, event.movement)">Remove</button>
+                        <button class="btn btn-sm btn-outline-danger" v-if="event !== editingEvent" v-on:click="deleteEvent(event.id, event.movement)">Remove</button>
+                    </div>
                 </div>
-
             </div>
         </div>
 
 
         <!--List View diplaying 1 Rep Max for each movement in order of Recent Date completed-->
-        <div class="col-sm-12">
-            <table class="table table-hover" v-show="list">
-                <thead>
-                    <tr class="">
-                        <td class="strong">Movement</td>
-                        <td class="strong">Weight</td>
-                        <td class="strong">Date</td>
-                        <td class="strong">Modify</td>
-                        <td class="strong">%</td>
-                        <td class="strong">Remove</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="event in events | orderBy 'date' -1">
-                        <td class="col-sm-4" v-if="event !== editingEvent">{{ event.movement }}</td>
-                        <td class="col-sm-4" v-if="event === editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.movement"></td>
-                        <td class="col-sm-2" v-if="event !== editingEvent">{{ event.weight }} {{ event.measurement }}</td>
-                        <td class="col-sm-2" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight"></td>
-                        <td class="col-sm-3" v-if="event !== editingEvent"><i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}</td>
-                        <td class="col-sm-3" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.date"></td>
-                        <td class="col-sm-1" v-if="event !== editingEvent"><i class="glyphicon glyphicon-pencil" v-on:click="editEvent(event)"></i></td>
-                        <td class="col-sm-1" v-if="event == editingEvent"><i class="glyphicon glyphicon-ok" v-on:click="endEditing(event)"></i></td>
-                        <td class="col-sm-1">
-                            <!--<button class="btn btn-xs btn-success" v-on:click="selectEvent(event.weight)">%</button>-->
-                            <button type="button" v-on:click="selectEvent(event.weight)" class="btn btn-xs btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">%</button>
-                        </td>
-                        <td class="col-sm-2">
-                            <button class="btn btn-xs btn-warning" v-on:click="deleteEvent(event.id)">Remove</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-hover" v-show="list">
+                    <thead>
+                        <tr class="">
+                            <td class="strong">Movement</td>
+                            <td class="strong">Weight</td>
+                            <td class="strong">Date</td>
+                            <td class="strong">Modify</td>
+                            <td class="strong">%</td>
+                            <td class="strong">Remove</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="event in events | orderBy 'date' -1">
+                            <td class="col-sm-4" v-if="event !== editingEvent">{{ event.movement }}</td>
+                            <td class="col-sm-4" v-if="event === editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.movement"></td>
+                            <td class="col-sm-2" v-if="event !== editingEvent">{{ event.weight }} {{ event.measurement }}</td>
+                            <td class="col-sm-2" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight"></td>
+                            <td class="col-sm-3" v-if="event !== editingEvent"><i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}</td>
+                            <td class="col-sm-3" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.date"></td>
+                            <td class="col-sm-1" v-if="event !== editingEvent"><i class="glyphicon glyphicon-pencil" v-on:click="editEvent(event)"></i></td>
+                            <td class="col-sm-1" v-if="event == editingEvent"><i class="glyphicon glyphicon-ok" v-on:click="endEditing(event)"></i></td>
+                            <td class="col-sm-1">
+                                <!--<button class="btn btn-xs btn-success" v-on:click="selectEvent(event.weight)">%</button>-->
+                                <button type="button" v-on:click="selectEvent(event.weight)" class="btn btn-sm  btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">%</button>
+                            </td>
+                            <td class="col-sm-2">
+                                <button class="btn btn-sm btn-warning" v-on:click="deleteEvent(event.id)">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!--Percentages Modal-->
@@ -214,7 +209,7 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -238,7 +233,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -248,8 +243,11 @@
 
 <script src="node_modules/vue/dist/vue.min.js "></script>
 <script src="node_modules/vue-resource/dist/vue-resource.min.js "></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
 <script src="backend/vue-router.js "></script>
 <script src="app.js "></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js "></script>
