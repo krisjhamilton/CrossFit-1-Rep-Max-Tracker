@@ -44,133 +44,133 @@
 
     <!--Container for the bulk of the displayed single page site-->
     <div class="container-fluid" id="events" v-show="authenticated" v-cloak>
-        <div class="row">
-            <!--Page Header-->
-            <div class="col-sm-12">
-                <button type="button" class="btn btn-sm btn-outline-primary" @click="listView" v-show="authenticated" v-cloak>Change View</button> <button type="button" class="btn btn-sm btn-outline-primary" @click="refreshEvents" v-show="authenticated"
-                    v-cloak><i class="fa fa-refresh"></i></button>
-                <br />
-                <br />
-
-            </div>
-        </div>
-
 
         <div class="row">
-            <!--Form to add 1 Rep Max-->
 
-            <div class="col-sm-12">
+            <!--Left Panel-->
+            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
                 <div class="card gutter">
-                    <!--<div class="well">-->
-                    <!--<div class="panel-heading">
-                    <h4>Enter your 1 Rep Max</h4>
-                </div>-->
-
                     <div class="card-block">
-                        <!--<div class="col-sm-12">-->
-                        <h4>Enter your 1 Rep Max</h4>
-                        <!--</div>-->
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <select class="form-control" placeholder="Movement" v-model="event.movement">
+                        <h4 class="card-title">Enter your 1 Rep Max</h4>
+
+                        <div class="card-text">
+                            <select class="form-control" placeholder="Movement" v-model="event.movement">
                                 <option v-for="movement in movements" >{{movement.movement}}</option>
                             </select>
-                            </div>
-                            <div class="col-sm-2">
-                                <input class="form-control" placeholder="Weight / Height" v-model="event.weight">
-                            </div>
-                            <div class="col-sm-2">
-                                <select class="form-control" v-model="event.measurement">
+                            <input class="form-control" placeholder="Weight / Height" v-model="event.weight">
+                            <select class="form-control" v-model="event.measurement">
                               <option value="kg" selected>kg</option>
                               <option value="cm">cm</option>
                             </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <input type="date" class="form-control" placeholder="Date" v-model="event.date">
-                            </div>
-                            <div class="col-sm-1"><button class="btn btn-sm btn-outline-primary" v-on:click="addEvent">Add</button></div>
+                            <input type="date" class="form-control" placeholder="Date" v-model="event.date">
+                            <button class="btn btn-sm btn-outline-primary" v-on:click="addEvent">Add</button>
                         </div>
+                    </div>
+                    <div class="card-footer hidden-sm-down">
+                        <button type="button" class="btn btn-sm btn-outline-primary" @click="listView" v-show="authenticated" v-cloak>Change View</button> <button type="button" class="btn btn-sm btn-outline-primary" @click="refreshEvents" v-show="authenticated"
+                            v-cloak><i class="fa fa-refresh"></i></button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <!--Panels diplaying 1 Rep Max for each movement in order of Recent Date completed-->
-            <div class="col-md-3 col-sm-6 col-xs-12" v-show="!list" v-for="event in events | orderBy 'date' -1 ">
-                <div class="card gutter">
-                    <div class="card-block panel-height">
-                        <div class="col-md-12">
-                            <p for="checkbox" v-if="event !== editingEvent" class="text-md" class="text-center">
-                                {{ event.movement }}
-                            </p>
-                            <select class="form-control" v-if="event === editingEvent" v-model="event.movement">
+
+
+            <!--center panel-->
+            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card gutted">
+
+                    <div class="card-block">
+                        <div class="row">
+                            <!--Panels diplaying 1 Rep Max for each movement in order of Recent Date completed-->
+                            <div class="col-md-4 col-sm-6 col-xs-12" v-show="!list" v-for="event in events | orderBy 'date' -1 ">
+                                <div class="card cardshadow gutter">
+                                    <div class="card-block panel-height">
+                                        <div class="col-md-12">
+                                            <p for="checkbox" v-if="event !== editingEvent" class="text-md" class="text-center">
+                                                {{ event.movement }}
+                                            </p>
+                                            <select class="form-control" v-if="event === editingEvent" v-model="event.movement">
                                 <option v-for="movement in movements">{{movement.movement}}</option>
                             </select>
-                        </div>
-                        <div class="col-md-12">
-                            <p for="checkbox" v-if="event !== editingEvent" class="text-lg" v-if="event.weight">{{ event.weight }} {{ event.measurement }}</p>
-                            <input class="form-control" type="text" v-if="event === editingEvent" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight">
-                        </div>
-                        <div class="col-md-12">
-                            <p class="text-sm " for="checkbox" v-if="event !== editingEvent">
-                                <i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}
-                            </p>
-                            <input for="checkbox" v-if="event == editingEvent" type="date" class="form-control" placeholder="Date" v-model="event.date">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <p for="checkbox" v-if="event !== editingEvent" class="text-lg" v-if="event.weight">{{ event.weight }} {{ event.measurement }}</p>
+                                            <input class="form-control" type="text" v-if="event === editingEvent" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <p class="text-sm " for="checkbox" v-if="event !== editingEvent">
+                                                <i class="fa fa-calendar" v-if="event.date"></i> {{ event.date | moment }}
+                                            </p>
+                                            <input for="checkbox" v-if="event == editingEvent" type="date" class="form-control" placeholder="Date" v-model="event.date">
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button class="btn btn-sm btn-outline-primary" v-if="event !== editingEvent" v-on:click="editEvent(event)">
+                        <i class="fa fa-pencil" ></i> Edit</button>
+                                        <button class="btn btn-sm btn-outline-primary" v-if="event == editingEvent" v-on:click="endEditing(event)">
+                        <i class="fa fa-save" ></i> Save</button>
+                                        <button class="btn btn-sm btn-outline-danger" v-if="event !== editingEvent" v-on:click="deleteEvent(event.id, event.movement)">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button class="btn btn-sm btn-outline-primary" v-if="event !== editingEvent" v-on:click="editEvent(event)">
-                        <i class="glyphicon glyphicon-pencil" ></i> Edit</button>
-                        <button class="btn btn-sm btn-outline-primary" v-if="event == editingEvent" v-on:click="endEditing(event)">
-                        <i class="glyphicon glyphicon-ok" ></i> Save</button>
-                        <button class="btn btn-sm btn-outline-danger" v-if="event !== editingEvent" v-on:click="deleteEvent(event.id, event.movement)">Remove</button>
+
+                    <!--List View diplaying 1 Rep Max for each movement in order of Recent Date completed-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-hover" v-show="list">
+                                <div class="row">
+                                    <thead>
+                                        <tr class="">
+                                            <td class="strong">Movement</td>
+                                            <td class="strong">Weight</td>
+                                            <td class="strong">Date</td>
+                                            <td class="strong">Modify</td>
+                                            <td class="strong">%</td>
+                                            <td class="strong">Remove</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="event in events | orderBy 'date' -1">
+                                            <td v-if="event !== editingEvent">{{ event.movement }}</td>
+                                            <td v-if="event === editingEvent">
+                                                <select class="form-control" v-if="event === editingEvent" v-model="event.movement">
+                                <option v-for="movement in movements">{{movement.movement}}</option>
+                            </select>
+                                            </td>
+                                            <td v-if="event !== editingEvent">{{ event.weight }} {{ event.measurement }}</td>
+                                            <td v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight"></td>
+                                            <td v-if="event !== editingEvent"><i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}</td>
+                                            <td v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.date"></td>
+                                            <td v-if="event !== editingEvent"><i class="fa fa-pencil" v-on:click="editEvent(event)"></i></td>
+                                            <td v-if="event == editingEvent"><i class="fa fa-save" v-on:click="endEditing(event)"></i></td>
+                                            <td>
+                                                <!--<button class="btn btn-xs btn-success" v-on:click="selectEvent(event.weight)">%</button>-->
+                                                <button type="button" v-on:click="selectEvent(event.weight)" class="btn btn-sm  btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">%</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-warning" v-on:click="deleteEvent(event.id)">Remove</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </div>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <!--List View diplaying 1 Rep Max for each movement in order of Recent Date completed-->
-        <div class="row">
-            <div class="col-sm-12">
-                <table class="table table-hover" v-show="list">
-                    <thead>
-                        <tr class="">
-                            <td class="strong">Movement</td>
-                            <td class="strong">Weight</td>
-                            <td class="strong">Date</td>
-                            <td class="strong">Modify</td>
-                            <td class="strong">%</td>
-                            <td class="strong">Remove</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="event in events | orderBy 'date' -1">
-                            <td class="col-sm-4" v-if="event !== editingEvent">{{ event.movement }}</td>
-                            <td class="col-sm-4" v-if="event === editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.movement"></td>
-                            <td class="col-sm-2" v-if="event !== editingEvent">{{ event.weight }} {{ event.measurement }}</td>
-                            <td class="col-sm-2" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight"></td>
-                            <td class="col-sm-3" v-if="event !== editingEvent"><i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}</td>
-                            <td class="col-sm-3" v-if="event == editingEvent"><input class="form-control" type="text" v-auto-focus class="text-input" @keyup.enter="endEditing(event)" v-model="event.date"></td>
-                            <td class="col-sm-1" v-if="event !== editingEvent"><i class="glyphicon glyphicon-pencil" v-on:click="editEvent(event)"></i></td>
-                            <td class="col-sm-1" v-if="event == editingEvent"><i class="glyphicon glyphicon-ok" v-on:click="endEditing(event)"></i></td>
-                            <td class="col-sm-1">
-                                <!--<button class="btn btn-xs btn-success" v-on:click="selectEvent(event.weight)">%</button>-->
-                                <button type="button" v-on:click="selectEvent(event.weight)" class="btn btn-sm  btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">%</button>
-                            </td>
-                            <td class="col-sm-2">
-                                <button class="btn btn-sm btn-warning" v-on:click="deleteEvent(event.id)">Remove</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!--right panel-->
+            <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-xs-12">
             </div>
+
         </div>
 
         <!--Percentages Modal-->
         <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-            <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -186,24 +186,24 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="col-sm-5">90%</td>
-                                    <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.9 | rounding 0 }}</td>
+                                    <td class="">90%</td>
+                                    <td class="" v-if="selectedEvent > 0">{{ selectedEvent * 0.9 | rounding 0 }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="col-sm-5">80%</td>
-                                    <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.8 | rounding 0 }}</td>
+                                    <td class="">80%</td>
+                                    <td class="" v-if="selectedEvent > 0">{{ selectedEvent * 0.8 | rounding 0 }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="col-sm-5">70%</td>
-                                    <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.7 | rounding 0 }}</td>
+                                    <td class="">70%</td>
+                                    <td class="" v-if="selectedEvent > 0">{{ selectedEvent * 0.7 | rounding 0 }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="col-sm-5">60%</td>
-                                    <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.6 | rounding 0 }}</td>
+                                    <td class="">60%</td>
+                                    <td class="" v-if="selectedEvent > 0">{{ selectedEvent * 0.6 | rounding 0 }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="col-sm-5">50%</td>
-                                    <td class="col-sm-5" v-if="selectedEvent > 0">{{ selectedEvent * 0.5 | rounding 0 }}</td>
+                                    <td class="">50%</td>
+                                    <td class="" v-if="selectedEvent > 0">{{ selectedEvent * 0.5 | rounding 0 }}</td>
                                 </tr>
                             </tbody>
                         </table>
